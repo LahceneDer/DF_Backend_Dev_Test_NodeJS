@@ -1,0 +1,22 @@
+{
+  "name": "nodejs_movies_test",
+  "version": "1.0.0",
+  "description": "Factory Digitale Backend Developer test with Node js",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon src/index.ts"
+  },
+  "author": "Lahcene Dergham",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.9.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2"
+  }
+}
