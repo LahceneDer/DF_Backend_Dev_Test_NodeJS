@@ -1,7 +1,7 @@
 import express from 'express';
 import App from './services/expressApp'
 import DBConnection from './config/database'
-import { PORT } from './config/env';
+import { PORT } from './config';
 
 const StartServer = async () => {
 
