@@ -26,7 +26,9 @@ export const createMovie = async (
   if (InputErrors.length > 0) {
     return res.status(400).json(InputErrors);
   }
-  const { description, genre, rating, title, trailerUrl } = <createMovieInputs>req.body;
+  const { description, genre, rating, title, trailerUrl } = <createMovieInputs>(
+    req.body
+  );
 
   try {
     const createdMovie = await movieService.createMovie({
@@ -34,7 +36,7 @@ export const createMovie = async (
       genre,
       rating,
       title,
-      trailerUrl
+      trailerUrl,
     } as IMovie);
 
     return res
@@ -63,6 +65,20 @@ export const getMovies = async (
         .json({ message: "Please, Enter a small page number" });
     }
     const movies = await movieService.getAllMoviesInBatch(limit, skip);
+
+    return res.status(200).json({ data: movies });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getTopMovies = async (
+  req: Request,
+  res: Response,
+  nex: NextFunction
+) => {
+  try {
+    const movies = await movieService.getTop5Movies();
 
     return res.status(200).json({ data: movies });
   } catch (error) {
@@ -100,24 +116,23 @@ export const getMovie = async (
   res: Response,
   nex: NextFunction
 ) => {
-
   const inputs = plainToClass(getMovieInputs, req.params);
 
   const InputErrors = await validate(inputs, {
     validationError: { target: true },
-  });  
+  });
 
   if (InputErrors.length > 0) {
     return res.status(400).json(InputErrors);
   }
   const { movieId } = inputs;
 
-  if(!isValidObjectId(movieId)) {
-    return res.status(400).json({ message: "Movie Id is not a valid ID"});
+  if (!isValidObjectId(movieId)) {
+    return res.status(400).json({ message: "Movie Id is not a valid ID" });
   }
-  
-  const id = new mongoose.Types.ObjectId(movieId)
-  
+
+  const id = new mongoose.Types.ObjectId(movieId);
+
   try {
     const movie = await movieService.getMovie(id);
     if (!movie) {
@@ -130,30 +145,28 @@ export const getMovie = async (
   }
 };
 
-
 export const getMovieTrailer = async (
   req: Request,
   res: Response,
   nex: NextFunction
 ) => {
-
   const inputs = plainToClass(getMovieInputs, req.params);
 
   const InputErrors = await validate(inputs, {
     validationError: { target: true },
-  });  
+  });
 
   if (InputErrors.length > 0) {
     return res.status(400).json(InputErrors);
   }
   const { movieId } = inputs;
 
-  if(!isValidObjectId(movieId)) {
-    return res.status(400).json({ message: "Movie Id is not a valid ID"});
+  if (!isValidObjectId(movieId)) {
+    return res.status(400).json({ message: "Movie Id is not a valid ID" });
   }
-  
-  const id = new mongoose.Types.ObjectId(movieId)
-  
+
+  const id = new mongoose.Types.ObjectId(movieId);
+
   try {
     const movie = await movieService.getMovieTrailer(id);
     if (!movie) {
