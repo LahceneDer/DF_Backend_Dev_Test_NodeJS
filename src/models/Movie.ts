@@ -7,6 +7,7 @@ export interface IMovie extends Document {
   description: string;
 }
 
+
 const movieSchema = new Schema<IMovie>({
   title: {
     type: String,
@@ -36,6 +37,9 @@ const movieSchema = new Schema<IMovie>({
 },
   timestamps: true,
 });
+
+movieSchema.index({ title: 'text', description: 'text' });
+
 
 const Movie = mongoose.model<IMovie>('Movie', movieSchema);
 

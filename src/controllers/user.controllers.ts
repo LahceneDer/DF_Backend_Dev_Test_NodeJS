@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user.services";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import { addFavoritesInputs, deleteFavoritesInputs } from "../dto/user.dto";
@@ -56,8 +56,6 @@ export const addMovieToFavorites = async (
 };
 
 
-
-
 export const deleteMovieFromFavorites = async (
     req: Request,
     res: Response,
@@ -91,7 +89,7 @@ export const deleteMovieFromFavorites = async (
           .json({ message: "Movie not in favorites list" });
       }
   
-      const updatedUser = await userService.deleteFavorite(user, movieId);
+      await userService.deleteFavorite(user, movieId);
       return res
         .status(200)
         .json({
@@ -102,3 +100,26 @@ export const deleteMovieFromFavorites = async (
     }
   };
   
+
+  export const getFavoritesList = async (
+    req: Request,
+    res: Response,
+    nex: NextFunction
+  ) => {
+
+
+    const { userId } = req.params
+      
+    try {
+      const favoritesList = await userService.getFavorite(userId);
+      const { favorites } = favoritesList as IUser
+  
+      return res
+        .status(200)
+        .json(
+          favorites
+        );
+    } catch (error) {
+      return res.status(500).json({ message: error });
+    }
+  };

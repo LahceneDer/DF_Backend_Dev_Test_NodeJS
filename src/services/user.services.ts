@@ -43,6 +43,12 @@ export class UserService {
     return updatedUser
   }
 
+  public async getFavorite(id: any) {
+    const user = this.userModel.findById(id, {_id: 0, favorites: 1}).populate("favorites")
+    return user
+  }
+
+
 }
 
 

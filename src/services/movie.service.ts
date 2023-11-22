@@ -22,4 +22,11 @@ export class MovieService {
       const movie = this.movieModel.findById(id)
       return movie
   }
+
+    public async searchMovies(query: string): Promise<IMovie[] | null> {
+        const movies = await this.movieModel.find({ $text: { $search: query } });
+        console.log(movies);
+        
+        return movies;
+    }
 }

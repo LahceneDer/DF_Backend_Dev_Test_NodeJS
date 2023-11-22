@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createMovieInputs } from "../dto/movie.dto";
+import { createMovieInputs, searchMovieInputs } from "../dto/movie.dto";
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import Movie, { IMovie } from "../models/Movie";
@@ -46,13 +46,15 @@ export const getMovies = async (
 ) => {
   const page = parseInt(req.query.page as string, 10) || 1;
   const limit = 10;
-  const skip = (page - 1) * limit
+  const skip = (page - 1) * limit;
 
   try {
-    const countMovies = await Movie.countDocuments()
+    const countMovies = await Movie.countDocuments();
 
-    if(skip > countMovies) {
-        return res.status(400).json({ message: "Please, Enter a small page number"})
+    if (skip > countMovies) {
+      return res
+        .status(400)
+        .json({ message: "Please, Enter a small page number" });
     }
     const movies = await movieService.getAllMoviesInBatch(limit, skip);
 
@@ -62,4 +64,27 @@ export const getMovies = async (
   }
 };
 
+export const searchMovies = async (
+  req: Request,
+  res: Response,
+  nex: NextFunction
+) => {
+  // Req body inputs alidation
+  const searchInputs = plainToClass(searchMovieInputs, req.params);
 
+  const InputErrors = await validate(searchInputs, {
+    validationError: { target: true },
+  });
+
+  if (InputErrors.length > 0) {
+    return res.status(400).json(InputErrors);
+  }
+  const { query } = searchInputs;  
+
+  try {
+    const movies = await movieService.searchMovies(query);
+    return res.status(200).json({ movies });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
