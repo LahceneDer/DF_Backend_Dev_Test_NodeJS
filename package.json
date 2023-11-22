@@ -4,7 +4,9 @@
   "description": "Factory Digitale Backend Developer test with Node js",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc -p ."
   },
   "author": "Lahcene Dergham",
   "license": "ISC",

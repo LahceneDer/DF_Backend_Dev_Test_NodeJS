@@ -13,5 +13,7 @@ EXPOSE 5353
 
 ENV NODE_ENV=production
 
+RUN npm run build
+
 # Run app.js when the container launches
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

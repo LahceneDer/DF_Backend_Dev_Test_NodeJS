@@ -10,8 +10,6 @@ export default async (app: Application) => {
   app.use(cookieParser());
   app.use(express.urlencoded({ extended: true }));
 
-  const swaggerDocument = yaml.load("src/config/swagger.yaml");
-
   //swagger
   const swaggerJsdoc = yaml.load("src/app.yaml");
   const swaggerUi = require("swagger-ui-express");
