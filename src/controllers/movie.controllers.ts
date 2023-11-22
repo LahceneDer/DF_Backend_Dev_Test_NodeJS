@@ -1,9 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { createMovieInputs, searchMovieInputs } from "../dto/movie.dto";
+import {
+  createMovieInputs,
+  getMovieInputs,
+  searchMovieInputs,
+} from "../dto/movie.dto";
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import Movie, { IMovie } from "../models/Movie";
 import { MovieService } from "../services/movie.service";
+import mongoose, { isValidObjectId } from "mongoose";
 
 const movieService = new MovieService(Movie);
 
@@ -79,11 +84,46 @@ export const searchMovies = async (
   if (InputErrors.length > 0) {
     return res.status(400).json(InputErrors);
   }
-  const { query } = searchInputs;  
+  const { query } = searchInputs;
 
   try {
     const movies = await movieService.searchMovies(query);
     return res.status(200).json({ movies });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getMovie = async (
+  req: Request,
+  res: Response,
+  nex: NextFunction
+) => {
+
+  const inputs = plainToClass(getMovieInputs, req.params);
+
+  const InputErrors = await validate(inputs, {
+    validationError: { target: true },
+  });  
+
+  if (InputErrors.length > 0) {
+    return res.status(400).json(InputErrors);
+  }
+  const { movieId } = inputs;
+
+  if(!isValidObjectId(movieId)) {
+    return res.status(400).json({ message: "Movie Id is not a valid ID"});
+  }
+  
+  const id = new mongoose.Types.ObjectId(movieId)
+  
+  try {
+    const movie = await movieService.getMovie(id);
+    if (!movie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    return res.status(200).json(movie);
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

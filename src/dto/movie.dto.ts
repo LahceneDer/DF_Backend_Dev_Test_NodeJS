@@ -1,4 +1,5 @@
 import { IsNumber, IsNotEmpty, Min, Max } from "class-validator";
+import { Types } from "mongoose";
 
 export class createMovieInputs {
   constructor(
@@ -36,4 +37,14 @@ export class searchMovieInputs {
 
   @IsNotEmpty()
   query: string;
+}
+
+
+export class getMovieInputs {
+  constructor(movieId: string) {
+    this.movieId = movieId;
+  }
+
+  @IsNotEmpty()
+  movieId: string;
 }

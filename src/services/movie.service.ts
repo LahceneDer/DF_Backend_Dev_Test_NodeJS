@@ -24,9 +24,7 @@ export class MovieService {
   }
 
     public async searchMovies(query: string): Promise<IMovie[] | null> {
-        const movies = await this.movieModel.find({ $text: { $search: query } });
-        console.log(movies);
-        
+        const movies = await this.movieModel.find({ $text: { $search: query } });        
         return movies;
     }
 }
