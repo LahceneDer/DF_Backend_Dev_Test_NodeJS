@@ -12,8 +12,7 @@ import {
 import { plainToClass } from "class-transformer";
 import { UserService } from "../services/user.services";
 
-
-const userService = new UserService(User)
+const userService = new UserService(User);
 
 export const userSignUp = async (
   req: Request,

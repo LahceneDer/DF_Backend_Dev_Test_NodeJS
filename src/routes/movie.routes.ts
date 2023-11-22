@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from "express"
+import express from "express"
 import { createMovie, getMovie, getMovieTrailer, getMovies, getTopMovies, searchMovies } from "../controllers/movie.controllers"
 import { Authenticate } from "../middlewares/authenticate"
 
-const router = express.Router()
 
+const router = express.Router()
 
 router.post("/", Authenticate, createMovie)
 router.get("/", getMovies)

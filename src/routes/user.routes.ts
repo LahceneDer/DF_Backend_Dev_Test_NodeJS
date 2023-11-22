@@ -1,5 +1,4 @@
 import express from "express"
-import { createMovie, getMovies } from "../controllers/movie.controllers"
 import { Authenticate } from "../middlewares/authenticate"
 import { addMovieToFavorites, deleteMovieFromFavorites, getFavoritesList } from "../controllers/user.controllers"
 

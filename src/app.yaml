@@ -1,0 +1,256 @@
+swagger: '2.0'
+info:
+  title: Movies/Series Management API
+  description: |
+    API documentation for the Movies and Series Management.
+  version: 1.0
+paths:
+  /auth/signup:
+    post:
+      summary: Sign up a new user
+      description: |
+        Register a new user with a unique username and password.
+      tags:
+        - Authentication
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreateUserInputs'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+  /auth/signin:
+    post:
+      summary: Sign in an existing user
+      description: |
+        Authenticate an existing user with a username and password.
+      tags:
+        - Authentication
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LoginUserInputs'
+      responses:
+        '200':
+          description: User authenticated successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+  /movies:
+    post:
+      summary: Create a new movie
+      description: |
+        Add a new movie to the system.
+      tags:
+        - Movies
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreateMovieInputs'
+      responses:
+        '201':
+          description: Movie created successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+    get:
+      summary: Get all movies
+      description: |
+        Retrieve a list of all movies.
+      tags:
+        - Movies
+      responses:
+        '200':
+          description: List of movies
+        '500':
+          description: Internal server error
+
+  /movies/top:
+    get:
+      summary: Get the top movies
+      description: |
+        Retrieve a list of top-rated movies.
+      tags:
+        - Movies
+      responses:
+        '200':
+          description: List of top movies
+        '500':
+          description: Internal server error
+
+  /movies/{movieId}:
+    get:
+      summary: Get details of a specific movie
+      description: |
+        Retrieve detailed information about a specific movie by ID.
+      tags:
+        - Movies
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Movie details
+        '404':
+          description: Movie not found
+        '500':
+          description: Internal server error
+
+  /movies/{movieId}/trailer:
+    get:
+      summary: Get the trailer of a specific movie
+      description: |
+        Retrieve the trailer of a specific movie by ID.
+      tags:
+        - Movies
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Movie trailer
+        '404':
+          description: Movie not found
+        '500':
+          description: Internal server error
+
+  /movies/search/{query}:
+    get:
+      summary: Search for movies based on a query
+      description: |
+        Search for movies based on a specified query.
+      tags:
+        - Movies
+      parameters:
+        - name: query
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of matching movies
+        '500':
+          description: Internal server error
+
+  /user/favorites:
+    patch:
+      summary: Add a movie to favorites
+      description: |
+        Add a movie to the user's list of favorites.
+      tags:
+        - User
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddToFavoritesInputs'
+      responses:
+        '200':
+          description: Movie added to favorites successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Remove a movie from favorites
+      description: |
+        Remove a movie from the user's list of favorites.
+      tags:
+        - User
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RemoveFromFavoritesInputs'
+      responses:
+        '200':
+          description: Movie removed from favorites successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+  /user/favorites/{userId}:
+    get:
+      summary: Get the list of user favorites
+      description: |
+        Retrieve the list of favorite movies for a specific user.
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of user favorites
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+
+definitions:
+  CreateUserInputs:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+  LoginUserInputs:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+  CreateMovieInputs:
+    type: object
+    properties:
+      title:
+        type: string
+      genre:
+        type: string
+      rating:
+        type: number
+      description:
+        type: string
+      trailer:
+        type: string
+
+  AddToFavoritesInputs:
+    type: object
+    properties:
+      movieId:
+        type: string
+
+  RemoveFromFavoritesInputs:
+    type: object
+    properties:
+      movieId:
+        type: string

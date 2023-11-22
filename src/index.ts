@@ -4,7 +4,6 @@ import DBConnection from './config/database'
 import { PORT } from './config';
 
 const StartServer = async () => {
-
   const app = express()
   await DBConnection()
   await App(app)
