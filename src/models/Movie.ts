@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface IMovie extends Document {
+export interface IMovie extends Document {
   title: string;
   genre: string;
   rating: number;
@@ -27,6 +27,13 @@ const movieSchema = new Schema<IMovie>({
     required: true,
   }
 }, {
+  toJSON: {
+    transform(doc, ret){
+        delete ret.createdAt;
+        delete ret.updatedAt;
+        delete ret.__v;
+    }
+},
   timestamps: true,
 });
 

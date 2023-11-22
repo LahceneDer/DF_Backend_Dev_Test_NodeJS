@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { UserAuthInputs } from "../dto/auth.dto";
-import { findUserByIdOrUsername } from "../services/user.services";
 import User from "../models/User";
 import { validate } from "class-validator";
 
@@ -11,6 +10,10 @@ import {
   ValidatePassword,
 } from "../utilities/PasswordUtilities";
 import { plainToClass } from "class-transformer";
+import { UserService } from "../services/user.services";
+
+
+const userService = new UserService(User)
 
 export const userSignUp = async (
   req: Request,
@@ -29,7 +32,7 @@ export const userSignUp = async (
   const { username, password } = <UserAuthInputs>req.body;
 
   try {
-    const existingUser = await findUserByIdOrUsername("", username);
+    const existingUser = await userService.findUserByIdOrUsername("", username);
 
     if (existingUser !== null) {
       return res.json({ message: "A user is exist with this email" });

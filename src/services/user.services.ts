@@ -1,25 +1,48 @@
-import User from "../models/User";
+import { Types } from "mongoose";
+import User, { IUser } from "../models/User";
 
-export const findUserByIdOrUsername = async (
-  id?: string,
-  username?: string
-) => {
-  if (!id && !username) {
-    throw new Error("Either id or username must be provided");
+export class UserService {
+  private userModel: typeof User
+
+  constructor(userModel: typeof User) {
+      this.userModel = userModel
   }
 
-  if (id) {
-    const user = await User.findOne({ _id: id });
+  public async findUserByIdOrUsername(id?: string, username?: string) {
+    if (!id && !username) {
+      throw new Error("Either id or username must be provided");
+    }
+  
+    if (id) {
+      const user = await User.findOne({ _id: id });
+      return user;
+    }
+  
+    const user = await User.findOne({ username });
+  
+    if (!user) {
+      return null;
+    }
+  
     return user;
   }
 
-  // Find the user by either id or username
-  const user = await User.findOne({ username });
+  public async addFavorite(user: IUser, movieId: Types.ObjectId) {
+    const currentUser = new User(user)
+    currentUser.favorites.push(movieId)
 
-  // Check if the user is null
-  if (!user) {
-    return null;
+    const updatedUser = await currentUser.save()
+
+    return updatedUser
   }
 
-  return user;
-};
+  public async deleteFavorite(user: IUser, movieId: Types.ObjectId) {
+    const updatedUser = User.updateOne({_id: user._id},
+      {$pull: { favorites: movieId }})
+
+    return updatedUser
+  }
+
+}
+
+
