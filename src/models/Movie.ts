@@ -5,6 +5,7 @@ export interface IMovie extends Document {
   genre: string;
   rating: number;
   description: string;
+  trailerUrl: string;
 }
 
 
@@ -26,7 +27,11 @@ const movieSchema = new Schema<IMovie>({
   description: {
     type: String,
     required: true,
-  }
+  },
+  trailerUrl: {
+    type: String,
+    required: true,
+  },
 }, {
   toJSON: {
     transform(doc, ret){

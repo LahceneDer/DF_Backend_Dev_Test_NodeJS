@@ -26,7 +26,7 @@ export const createMovie = async (
   if (InputErrors.length > 0) {
     return res.status(400).json(InputErrors);
   }
-  const { description, genre, rating, title } = <createMovieInputs>req.body;
+  const { description, genre, rating, title, trailerUrl } = <createMovieInputs>req.body;
 
   try {
     const createdMovie = await movieService.createMovie({
@@ -34,6 +34,7 @@ export const createMovie = async (
       genre,
       rating,
       title,
+      trailerUrl
     } as IMovie);
 
     return res
@@ -119,6 +120,42 @@ export const getMovie = async (
   
   try {
     const movie = await movieService.getMovie(id);
+    if (!movie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    return res.status(200).json(movie);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+export const getMovieTrailer = async (
+  req: Request,
+  res: Response,
+  nex: NextFunction
+) => {
+
+  const inputs = plainToClass(getMovieInputs, req.params);
+
+  const InputErrors = await validate(inputs, {
+    validationError: { target: true },
+  });  
+
+  if (InputErrors.length > 0) {
+    return res.status(400).json(InputErrors);
+  }
+  const { movieId } = inputs;
+
+  if(!isValidObjectId(movieId)) {
+    return res.status(400).json({ message: "Movie Id is not a valid ID"});
+  }
+  
+  const id = new mongoose.Types.ObjectId(movieId)
+  
+  try {
+    const movie = await movieService.getMovieTrailer(id);
     if (!movie) {
       return res.status(404).json({ message: "Movie not found" });
     }

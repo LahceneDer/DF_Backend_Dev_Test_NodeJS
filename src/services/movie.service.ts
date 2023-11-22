@@ -23,6 +23,11 @@ export class MovieService {
       return movie
   }
 
+  public async getMovieTrailer(id: Types.ObjectId): Promise<IMovie | null> {
+    const movie = this.movieModel.findById(id, {_id:0, trailerUrl: 1})
+    return movie
+}
+
     public async searchMovies(query: string): Promise<IMovie[] | null> {
         const movies = await this.movieModel.find({ $text: { $search: query } });        
         return movies;

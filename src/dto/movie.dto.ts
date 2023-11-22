@@ -1,15 +1,16 @@
 import { IsNumber, IsNotEmpty, Min, Max } from "class-validator";
-import { Types } from "mongoose";
 
 export class createMovieInputs {
   constructor(
     title: string,
     genre: string,
     rating: number,
-    description: string
+    description: string,
+    trailerUrl: string
   ) {
     this.title = title;
     this.genre = genre;
+    this.trailerUrl = trailerUrl;
     this.rating = rating;
     this.description = description;
   }
@@ -19,6 +20,9 @@ export class createMovieInputs {
 
   @IsNotEmpty()
   genre: string;
+
+  @IsNotEmpty()
+  trailerUrl: string;
 
   @IsNumber()
   @IsNotEmpty()
