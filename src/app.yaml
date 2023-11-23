@@ -240,7 +240,7 @@ definitions:
         type: number
       description:
         type: string
-      trailer:
+      trailerUrl:
         type: string
 
   AddToFavoritesInputs:
