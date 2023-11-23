@@ -18,3 +18,6 @@ docker-compose up
 
 Access the App:
 Open your browser and visit http://localhost:3030 to access the application.
+
+**I wanted to provide a quick note regarding the environment variables used in the technical test. For testing purposes, I have included environment variables in the project; however, I want to emphasize that in a production environment, it is not a secure practice to keep sensitive information, such as API keys or database credentials, directly in the codebase.
+In a real-world scenario, it's recommended to use a secure method for managing environment variables, such as a configuration file or a dedicated environment variables management solution.**
