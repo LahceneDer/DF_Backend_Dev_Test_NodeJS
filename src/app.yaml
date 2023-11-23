@@ -151,7 +151,7 @@ paths:
         '500':
           description: Internal server error
 
-  /user/favorites:
+  /users/favorites:
     patch:
       summary: Add a movie to favorites
       description: |
@@ -192,7 +192,7 @@ paths:
         '500':
           description: Internal server error
 
-  /user/favorites/{userId}:
+  /users/favorites/{userId}:
     get:
       summary: Get the list of user favorites
       description: |
