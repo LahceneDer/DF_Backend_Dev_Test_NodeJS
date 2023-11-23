@@ -37,14 +37,14 @@ export class UserService {
   }
 
   public async deleteFavorite(user: IUser, movieId: Types.ObjectId) {
-    const updatedUser = User.updateOne({_id: user._id},
+    const updatedUser = await User.updateOne({_id: user._id},
       {$pull: { favorites: movieId }})
 
     return updatedUser
   }
 
   public async getFavorite(id: any) {
-    const user = this.userModel.findById(id, {_id: 0, favorites: 1}).populate("favorites")
+    const user = await this.userModel.findById(id, {_id: 0, favorites: 1}).populate("favorites")
     return user
   }
 
