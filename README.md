@@ -17,4 +17,4 @@ Run with Docker Compose:
 docker-compose up
 
 Access the App:
-Open your browser and visit http://localhost:5353 to access the application.
+Open your browser and visit http://localhost:3030 to access the application.
